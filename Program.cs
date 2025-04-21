@@ -1,4 +1,6 @@
 using GiveHearth.Context;
+using GiveHearth.Interfaces;
+using GiveHearth.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IRepositoryRegister, RepositoryRegister>();
 
 var app = builder.Build();
 
