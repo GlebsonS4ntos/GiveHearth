@@ -55,7 +55,8 @@ namespace GiveHearth.Services
 
             if(register == null) throw new Exception();
 
-            await _repositoryRegister.UpdateAsync(_mapper.Map<Register>(dto));
+            _mapper.Map(dto, register);
+            await _repositoryRegister.UpdateAsync(register);
         }
     }
 }
