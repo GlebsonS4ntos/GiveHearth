@@ -27,7 +27,7 @@ namespace GiveHearth.Repositories
         {
             var e = await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
-            return e;
+            return e.Entity;
         }
 
         public async Task UpdateAsync(T entity)
