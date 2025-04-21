@@ -9,6 +9,7 @@ namespace GiveHearth.Config
         public RegisterProfile() 
         { 
             CreateMap<Register, RegisterDto>().ReverseMap();
+            CreateMap<List<Register>, List<RegisterDto>>().ReverseMap();
         }
     }
 }
