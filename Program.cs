@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using GiveHearth.Context;
 using GiveHearth.Interfaces;
 using GiveHearth.Repositories;
@@ -12,7 +13,10 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,6 +26,8 @@ builder.Services.AddScoped<IServiceRegister, ServiceRegister>();
 builder.Services.AddScoped<IRepositoryRegister, RepositoryRegister>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
 var app = builder.Build();
 
