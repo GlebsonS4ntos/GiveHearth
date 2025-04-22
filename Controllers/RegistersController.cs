@@ -30,7 +30,11 @@ namespace GiveHearth.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetRegisterByIdAsync([FromRoute] int id)
         {
-            return Ok(await _serviceRegister.GetByIdAsync(id));
+            var register = await _serviceRegister.GetByIdAsync(id);
+
+            if(register == null) return NotFound();
+
+            return Ok(register);
         }
 
         [HttpPost]
@@ -43,6 +47,12 @@ namespace GiveHearth.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateRegisterAsync([FromBody] RegisterDto dto, [FromRoute] int id)
         {
+            if(dto.Id != id) return BadRequest("Id in the body and route must be the same.");
+
+            var register = await _serviceRegister.GetByIdAsync(id);
+
+            if (register == null) return NotFound();
+
             await _serviceRegister.UpdateAsync(dto, id);
             return NoContent();
         }
@@ -50,6 +60,10 @@ namespace GiveHearth.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteRegisterAsync([FromRoute] int id)
         {
+            var register = await _serviceRegister.GetByIdAsync(id);
+
+            if (register == null) return NotFound();
+
             await _serviceRegister.DeleteAsync(id);
             return NoContent();
         }

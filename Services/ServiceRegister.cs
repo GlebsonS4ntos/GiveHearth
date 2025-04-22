@@ -27,8 +27,6 @@ namespace GiveHearth.Services
         {
             var register = await _repositoryRegister.GetByIdAsync(id);
 
-            if (register == null) throw new Exception();
-
             await _repositoryRegister.DeleteAsync(register);
         }
 
@@ -49,11 +47,7 @@ namespace GiveHearth.Services
 
         public async Task UpdateAsync(RegisterDto dto, int id)
         {
-            if (dto.Id != id) throw new Exception();
-
             var register = await _repositoryRegister.GetByIdAsync(id);
-
-            if(register == null) throw new Exception();
 
             _mapper.Map(dto, register);
             await _repositoryRegister.UpdateAsync(register);
