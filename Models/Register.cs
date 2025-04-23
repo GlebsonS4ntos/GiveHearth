@@ -7,5 +7,6 @@
         public string Cpf {  get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime RegisterDate { get; set; }
+        public string Email { get; set; }
     }
 }
