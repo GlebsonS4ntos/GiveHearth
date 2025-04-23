@@ -21,6 +21,9 @@ namespace GiveHearth.Validations
             RuleFor(r => r.BirthDate)
                 .Must(BirthDateValidation)
                 .WithMessage("Must be 18 years old.");
+            RuleFor(r => r.Email)
+                .NotEmpty().WithMessage("E-mail is required.")
+                .EmailAddress().WithMessage("Invalid e-mail.");
         }
 
         private bool RegisterDateValidation(DateTime registerDate)
