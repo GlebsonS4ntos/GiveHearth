@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using GiveHearth.Config;
 using GiveHearth.Context;
 using GiveHearth.Interfaces;
 using GiveHearth.Repositories;
@@ -22,12 +23,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IServiceRegister, ServiceRegister>();
+builder.Services.AddScoped<IServiceEmail, ServiceEmail>();
 
 builder.Services.AddScoped<IRepositoryRegister, RepositoryRegister>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
+
+builder.Services.Configure<EmailSettings>(
+        builder.Configuration.GetSection("EmailSettings")
+    );
 
 var app = builder.Build();
 
