@@ -9,18 +9,23 @@ namespace GiveHearth.Services
     {
         private readonly IRepositoryRegister _repositoryRegister;
         private readonly IMapper _mapper;
+        private readonly IServiceEmail _serviceEmail;
 
-        public ServiceRegister(IRepositoryRegister repositoryRegister, IMapper mapper)
+        public ServiceRegister(IRepositoryRegister repositoryRegister, IMapper mapper, IServiceEmail serviceEmail)
         {
             _repositoryRegister = repositoryRegister;
             _mapper = mapper;
+            _serviceEmail = serviceEmail;
         }
 
         public async Task<RegisterDto> CreateAsync(RegisterDto dto)
         {
             var register = _mapper.Map<Register>(dto);
    
-            return _mapper.Map<RegisterDto>(await _repositoryRegister.CreateAsync(register));
+            var registerDto = _mapper.Map<RegisterDto>(await _repositoryRegister.CreateAsync(register));
+
+            await _serviceEmail.SendEmailAsync(registerDto.Email, registerDto.RegisterDate);
+            return registerDto;
         }
 
         public async Task DeleteAsync(int id)
@@ -51,6 +56,11 @@ namespace GiveHearth.Services
 
             _mapper.Map(dto, register);
             await _repositoryRegister.UpdateAsync(register);
+
+            if (register.Email != dto.Email || register.RegisterDate != dto.RegisterDate)
+            {
+                await _serviceEmail.SendEmailAsync(register.Email, register.RegisterDate);
+            }
         }
     }
 }
